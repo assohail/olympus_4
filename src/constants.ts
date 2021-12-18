@@ -53,7 +53,8 @@ export const addresses: IAddresses = {
     // TREASURY_V2: "0x8dd0d811CEFb5CF41528C495E76638B2Ea39d2e6",
     // SOHM_V2: "0xebED323CEbe4FfF65F7D7612Ea04313F718E5A75",
     // STAKING_V2: "0x06984c3A9EB8e3A8df02A4C09770D5886185792D",
-  },
+  }
+  // ,
   // ==================================================commented
   // 1: {
   //   DAI_ADDRESS: "0x6b175474e89094c44da98b954eedeac495271d0f", // duplicate
@@ -198,7 +199,7 @@ interface INetwork {
 
 // =======================================================commented
 // export const USER_SELECTABLE_NETWORKS = [1, 42161, 43114];
-   export const USER_SELECTABLE_NETWORKS = []
+   export const USER_SELECTABLE_NETWORKS = [4]
 
 // Set this to the chain number of the most recently added network in order to enable the 'Now supporting X network'
 // message in the UI. Set to -1 if we don't want to display the message at the current time.
