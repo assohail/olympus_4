@@ -73,8 +73,8 @@ export const poolTogetherUILinks = (networkId: number): Array<string> => {
   } 
   else {
     return [
-      `https://couponapprove.com`,
-      `https://couponapprove.com/blogs`,
+      `https://community.pooltogether.com/pools/rinkeby/${contractAddress}/home`,
+      `https://community.pooltogether.com/pools/rinkeby/${contractAddress}/manage#stats`,
     ];
   }
 };
