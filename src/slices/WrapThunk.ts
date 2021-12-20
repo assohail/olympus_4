@@ -9,7 +9,8 @@ import { fetchAccountSuccess, getBalances } from "./AccountSlice";
 import { error, info } from "../slices/MessagesSlice";
 import { IActionValueAsyncThunk, IChangeApprovalAsyncThunk, IJsonRPCError } from "./interfaces";
 import { segmentUA } from "../helpers/userAnalyticHelpers";
-import { IERC20, WsOHM, V2sOhmNew, V2Staking } from "src/typechain";
+import { IERC20 // WsOHM, V2sOhmNew, V2Staking 
+} from "src/typechain";
 
 interface IUAData {
   address: string;
@@ -89,12 +90,12 @@ export const changeWrapV2 = createAsyncThunk(
 
     const signer = provider.getSigner();
 
-    const stakingContract = new ethers.Contract(
-      addresses[networkID].STAKING_V2 as string,
-      v2Staking,
-      signer,
-    ) as V2Staking;
-    const v2sOhmContract = new ethers.Contract(addresses[networkID].SOHM_V2 as string, v2sOHM, signer) as V2sOhmNew;
+    // const stakingContract = new ethers.Contract(
+    //   addresses[networkID].STAKING_V2 as string,
+    //   v2Staking,
+    //   signer,
+    // ) as V2Staking;
+    // const v2sOhmContract = new ethers.Contract(addresses[networkID].SOHM_V2 as string, v2sOHM, signer) as V2sOhmNew;
 
     let wrapTx;
     let uaData: IUAData = {
@@ -105,38 +106,38 @@ export const changeWrapV2 = createAsyncThunk(
       type: null,
     };
 
-    try {
-      if (action === "wrap") {
-        uaData.type = "wrap";
-        const formattedValue = ethers.utils.parseUnits(value, "gwei");
-        wrapTx = await stakingContract.wrap(address, formattedValue);
-      } else if (action === "unwrap") {
-        uaData.type = "unwrap";
-        const formattedValue = ethers.utils.parseUnits(value, "ether");
-        wrapTx = await stakingContract.unwrap(address, formattedValue);
-        // const pendingTxnType = action === "wrap" ? "wrapping" : "unwrapping";
-        // uaData.txHash = wrapTx.hash;
-        // dispatch(fetchPendingTxns({ txnHash: wrapTx.hash, text: getWrappingTypeText(action), type: pendingTxnType }));
-        // await wrapTx.wait();
-      }
-    } catch (e: unknown) {
-      uaData.approved = false;
-      const rpcError = e as IJsonRPCError;
-      if (rpcError.code === -32603 && rpcError.message.indexOf("ds-math-sub-underflow") >= 0) {
-        dispatch(
-          error("You may be trying to wrap more than your balance! Error code: 32603. Message: ds-math-sub-underflow"),
-        );
-      } else {
-        dispatch(error(rpcError.message));
-      }
-      return;
-    } finally {
-      if (wrapTx) {
-        segmentUA(uaData);
+    // try {
+    //   if (action === "wrap") {
+    //     uaData.type = "wrap";
+    //     const formattedValue = ethers.utils.parseUnits(value, "gwei");
+    //     wrapTx = await stakingContract.wrap(address, formattedValue);
+    //   } else if (action === "unwrap") {
+    //     uaData.type = "unwrap";
+    //     const formattedValue = ethers.utils.parseUnits(value, "ether");
+    //     wrapTx = await stakingContract.unwrap(address, formattedValue);
+    //     // const pendingTxnType = action === "wrap" ? "wrapping" : "unwrapping";
+    //     // uaData.txHash = wrapTx.hash;
+    //     // dispatch(fetchPendingTxns({ txnHash: wrapTx.hash, text: getWrappingTypeText(action), type: pendingTxnType }));
+    //     // await wrapTx.wait();
+    //   }
+    // } catch (e: unknown) {
+    //   uaData.approved = false;
+    //   const rpcError = e as IJsonRPCError;
+    //   if (rpcError.code === -32603 && rpcError.message.indexOf("ds-math-sub-underflow") >= 0) {
+    //     dispatch(
+    //       error("You may be trying to wrap more than your balance! Error code: 32603. Message: ds-math-sub-underflow"),
+    //     );
+    //   } else {
+    //     dispatch(error(rpcError.message));
+    //   }
+    //   return;
+    // } finally {
+    //   if (wrapTx) {
+    //     segmentUA(uaData);
 
-        // dispatch(clearPendingTxn(wrapTx.hash));
-      }
-    }
+    //     // dispatch(clearPendingTxn(wrapTx.hash));
+    //   }
+    // }
     dispatch(getBalances({ address, networkID, provider }));
   },
 );
